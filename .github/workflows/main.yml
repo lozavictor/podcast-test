@@ -18,9 +18,16 @@ jobs:
         run: python feed.py
       - name: Push Repo
         run: |
-          git config user.name victor-loza
-          git config user.email loza.victor@outlook.com
-          git add .
-          git commit -m "Modified Feed"
-          git push
-      
+          git config user.name "victor-loza"
+          git config user.email "loza.victor@outlook.com"
+    
+          # Check if there are any file changes before committing avoids the error "exit at step 1"
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Changes detected — committing and pushing."
+            git add .
+            git commit -m "Modified Feed"
+            git push
+          else
+            echo "No changes to commit. Skipping push."
+          fi
+
